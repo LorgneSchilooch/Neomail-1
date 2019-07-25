@@ -2,9 +2,9 @@ FROM python
 ENV PYTHONUNBUFFERED 1
 RUN mkdir /code
 WORKDIR /code
-COPY requierments.txt /code/
+COPY requirements.txt /code/
 RUN pip install --upgrade pip
-RUN pip install -r requierments.txt
+RUN pip install -r requirements.txt
 COPY . /code/
 WORKDIR /home
 COPY run_neomail.sh /home/

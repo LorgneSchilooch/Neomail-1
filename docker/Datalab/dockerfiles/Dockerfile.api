@@ -1,0 +1,11 @@
+FROM python:3.7
+ENV PYTHONUNBUFFERED 1
+WORKDIR /home/4aibd-annuel-project
+
+# Add requirements file 
+ADD requirements.txt /app/
+RUN pip install --upgrade -r /app/requirements.txt
+RUN curl -sSL https://sdk.cloud.google.com | bash
+ENV PATH $PATH:/root/google-cloud-sdk/bin
+CMD gcloud components update
+CMD gcloud init
