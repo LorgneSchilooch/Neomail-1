@@ -3,19 +3,15 @@ from __future__ import print_function
 from googleapiclient.discovery import build
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
-from src.components.o_auth2_web_server import google_auth
+from src.app.web_server import google_auth
 from apiclient import errors
 import pickle
 import os.path
-import io
-import tempfile
-import flask
 import random
 import google.oauth2.credentials
 import googleapiclient.discovery
 import flask
 from pathlib import Path  # python3 only
-from dotenv import load_dotenv
 
 CLIENT_SECRET_PATH = "resources/gmail_credential/gmail_credentials.json"
 env_path = Path('src/components/gmail_manager/.env')
