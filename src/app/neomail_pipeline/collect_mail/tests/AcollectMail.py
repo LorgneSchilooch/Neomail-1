@@ -10,7 +10,7 @@ import time
 
 SERVICE_ACCOUNT = "resources/gcp_credential/service_account.json"
 CLIENT_SECRET = "resources/gmail_credential/gmail_credentials.json"
-SCHEMA = "src/apps/utils/data_pipeline/collect_mail/resources/schema/gmail_fields.json"
+SCHEMA = "src/app/neomail_pipeline/collect_mail/resources/schema/gmail_fields.json"
 PATH_SAVE = "a_collect_gmail/"
 """
 Usage: Insert data in BigQuery into dataset
@@ -44,7 +44,7 @@ def main():
                                                         max_results=10,
                                                         batch_using=False)
 
-    reader = csv.mails = CollectManager('dev').collect_mail('me', message_id)
+    reader = csv.mails = CollectManager('dev').collect_mail('me', message_id, max_workers=1)
 
     # Save mail in Csv
     with open(PATH_SAVE + name_file + '.csv', 'w', encoding='utf8', newline='') as output_file:

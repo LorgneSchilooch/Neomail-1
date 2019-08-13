@@ -11,25 +11,16 @@ import random
 import google.oauth2.credentials
 import googleapiclient.discovery
 import flask
-from pathlib import Path  # python3 only
+from pathlib import Path
 
-CLIENT_SECRET_PATH = "resources/gmail_credential/gmail_credentials.json"
-env_path = Path('src/components/gmail_manager/.env')
+CLIENT_SECRET_PATH = Path('resources/gmail_credential/gmail_credentials.json')
 '''
 Reading GMAIL using API GMAIL for Python
 '''
 
 # If modifying these scopes, delete the file token.pickle.
-SCOPES = ['https://www.googleapis.com/auth/gmail.readonly',
-          'https://www.googleapis.com/auth/gmail.labels',
-          'https://www.googleapis.com/auth/gmail.send',
-          'https://www.googleapis.com/auth/gmail.compose',
-          'https://www.googleapis.com/auth/gmail.insert',
-          'https://www.googleapis.com/auth/gmail.modify',
-          'https://www.googleapis.com/auth/gmail.metadata',
-          'https://www.googleapis.com/auth/gmail.settings.basic',
-          'https://www.googleapis.com/auth/gmail.settings.sharing']
-PATH_TOKEN = 'resources/gmail_credential/'
+SCOPES_DEV = ['https://mail.google.com/']
+PATH_TOKEN = 'resources/gmail_credential/token/'
 API_SERVICE_NAME = 'gmail'
 API_VERSION = 'v1'
 
@@ -68,7 +59,7 @@ class GmailDataFactory(object):
                 credentials.refresh(Request())
             else:
                 flow = InstalledAppFlow.from_client_secrets_file(
-                    client_secret, SCOPES)
+                    client_secret, SCOPES_DEV)
                 credentials = flow.run_local_server()
             # Save the credentials for the next run
             with open(PATH_TOKEN + 'token.pickle', 'wb') as token:

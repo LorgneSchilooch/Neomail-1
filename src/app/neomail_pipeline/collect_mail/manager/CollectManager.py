@@ -284,11 +284,12 @@ class CollectManager(object):
             print(inst.args)
             print(inst)
 
-    def collect_mail(self, user_id, message_id):
+    def collect_mail(self, user_id, message_id, max_workers=1):
         """function collect data from list send by API Gmail.
         Args:
             user_id :
             message_id :
+            max_workers :
 
         Returns:
             list, The list will have dictionary in the following format:
@@ -300,7 +301,7 @@ class CollectManager(object):
         """
         print("Total  messages collect in inbox: ", str(len(message_id)))
 
-        with concurrent.futures.ProcessPoolExecutor(max_workers=5) as executor:
+        with concurrent.futures.ProcessPoolExecutor(max_workers=max_workers) as executor:
             future_results = [
                 executor.submit(self.build_data, mails=(self.__service.get_message(user_id, mail['id'], format='full')))
                 for
