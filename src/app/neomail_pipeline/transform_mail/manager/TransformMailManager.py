@@ -7,12 +7,9 @@ import re
 import unicodedata
 import json
 
-SCHEMA = Path('src/app/neomail_pipeline/transform_mail/resources/schema/gmail_fields.json')
-
-
 class TransformMmailManager(object):
 
-    def __init__(self, mail):
+    def __init__(self, mail, schema):
         """
 
         Args:
@@ -25,17 +22,17 @@ class TransformMmailManager(object):
         Returns:
         """
         self.__mail = mail
+        self.__schema = schema
         self.__mails_collected = []
 
-    @staticmethod
-    def __get_fieldnames():
+    def __get_fieldnames(self):
         """
         Returns:
 
         """
         schema = {}
         fieldnames = []
-        with open(SCHEMA) as json_file:
+        with open(self.__schema) as json_file:
             schema['fields'] = json.load(json_file)
         for field in schema['fields']:
             fieldnames.append(field['name'])

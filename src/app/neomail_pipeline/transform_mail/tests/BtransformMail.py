@@ -3,17 +3,9 @@ from src.app.neomail_pipeline.transform_mail.manager.TransformMailManager import
 from dotenv import load_dotenv
 from pathlib import Path
 import pandas as pd
-import json
 import os
-import csv
-import time
-import sys
 
-SERVICE_ACCOUNT = Path('resources/gcp_credential/service_account.json')
-SCHEMA = Path('src/app/neomail_pipeline/transform_mail/resources/schema/gmail_fields.json')
-PATH_COLLECT = 'a_collect_gmail/'
-PATH_SAVE = './b_transform_gmail/'
-
+env_path = Path('src/app/neomail_pipeline/transform_mail/.env')
 """
 Usage:
 python -m src.app.neomail_pipeline.transform_mail.tests.BtransformMail
@@ -28,11 +20,21 @@ def main(name_file):
     Returns:
 
     """
-    df_mail_collected = pd.read_csv(PATH_COLLECT + name_file, encoding='utf-8')
 
-    df_mail = TransformMmailManager(df_mail_collected).transform_mail()
+    # read path from .env
+    load_dotenv(dotenv_path=env_path)
+    schema = os.getenv("SCHEMA")
+    path_collect_mail = os.getenv("PATH_COLLECT")
+    path_transform_mail = os.getenv("PATH_SAVE")
 
-    df_mail.to_csv(path_or_buf=PATH_SAVE + name_file)
+    # collect mail from csv
+    df_mail_collected = pd.read_csv(path_collect_mail + name_file, encoding='utf-8')
+
+    # Transform part of mail
+    df_mail = TransformMmailManager(df_mail_collected, schema).transform_mail()
+
+    # Store mail in csv
+    df_mail.to_csv(path_or_buf=path_transform_mail + name_file)
 
 
 if __name__ == '__main__':
