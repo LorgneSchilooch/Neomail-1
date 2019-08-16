@@ -14,7 +14,7 @@ SCHEMA = "src/app/neomail_pipeline/collect_mail/resources/schema/gmail_fields.js
 PATH_SAVE = "a_collect_gmail/"
 """
 Usage: Insert data in BigQuery into dataset
-python -m src.apps.utils.data_pipeline.collect_mail.AcollectMail
+python -m src.app.neomail_pipeline.collect_mail.tests.AcollectMail
 """
 
 
