@@ -7,6 +7,7 @@ import re
 import unicodedata
 import json
 
+
 class TransformMmailManager(object):
 
     def __init__(self, mail, schema):
@@ -47,34 +48,38 @@ class TransformMmailManager(object):
         df_mail_clean = pd.DataFrame(columns=self.__get_fieldnames())
 
         for i in range(0, df_mail_len):
-            df_mail_clean = df_mail_clean.append({'idMail': self.__mail['idMail'][i],
-                                                  'threadId': self.__mail['threadId'][i],
-                                                  'historyId': self.__mail['historyId'][i],
-                                                  'from': self.__mail['from'][i],
-                                                  'to': self.__mail['to'][i],
-                                                  'date': self.__mail['date'][i],
-                                                  'labelIds': str((self.__mail['labelIds'][i])).replace('[',
-                                                                                                        '').replace(']',
-                                                                                                                    '').replace(
-                                                      '\'', ''),
-                                                  'spam': 1 if 'SPAM' in self.__mail['labelIds'][i] else 0,
-                                                  'mimeType': self.__mail['mimeType'][i],
-                                                  'body': self.__html_to_text(str(self.__mail['body'][i]))
-                                                  },
-                                                 ignore_index=True)
+            if self.__mail['body'][i] is not None:
+                df_mail_clean = df_mail_clean.append({'idMail': self.__mail['idMail'][i],
+                                                      'threadId': self.__mail['threadId'][i],
+                                                      'historyId': self.__mail['historyId'][i],
+                                                      'from': self.__mail['from'][i],
+                                                      'to': self.__mail['to'][i],
+                                                      'date': self.__mail['date'][i],
+                                                      'labelIds': str((self.__mail['labelIds'][i])).replace('[',
+                                                                                                            '').replace(
+                                                          ']',
+                                                          '').replace(
+                                                          '\'', ''),
+                                                      'spam': 1 if 'SPAM' in self.__mail['labelIds'][i] else 0,
+                                                      'mimeType': self.__mail['mimeType'][i],
+                                                      'body': self.__html_to_text(str(self.__mail['body'][i]))
+                                                      },
+                                                     ignore_index=True)
+
+            elif self.__mail['snippet'] is not None:
+                df_mail_clean = df_mail_clean.append({
+                    'idMail': self.__mail['idMail'][i],
+                    'threadId': self.__mail['threadId'][i],
+                    'historyId': self.__mail['historyId'][i],
+                    'from': self.__mail['from'][i],
+                    'to': self.__mail['to'][i],
+                    'date': self.__mail['date'][i],
+                    'labelIds': str((self.__mail['labelIds'][i])).replace('[', '').replace(']', '').replace('\'', ''),
+                    'spam': 1 if 'SPAM' in self.__mail['labelIds'][i] else 0,
+                    'body': self.__html_to_text(str(self.__mail['snippet'][i]))
+                })
 
         return df_mail_clean
-        # elif self.__mail['snippet'] is not None:
-        #     mail['idMail'] = self.__mail['idMail']
-        #     mail['threadId'] = self.__mail['threadId']
-        #     mail['historyId'] = self.__mail['historyId']
-        #     mail['from'] = self.__mail['from']
-        #     mail['to'] = self.__mail['to']
-        #     mail['date'] = self.__mail['date']
-        #     mail['labelIds'] = str((self.__mail['labelIds'])).replace('[', '').replace(']', '').replace('\'', '')
-        #     mail['spam'] = 1 if 'SPAM' in self.__mail['labelIds'] else 0
-        #     mail['body'] = self.__html_to_text(self.__mail['snippet'])
-        #     return mail
 
     def __split_sender_mail(self):
         pass
